@@ -1,0 +1,32 @@
+environment:
+  matrix:
+    - arch: "x86"
+      tools: "mingw"
+    
+    - arch: "x64"
+      tools: "mingw"
+
+#    - arch: "x86"
+#      tools: "msvc12"
+    
+#    - arch: "x64"
+#      tools: "msvc12"
+    
+
+
+install:
+  - ps: if($env:arch -eq 'x64') {
+          $env:vcvar_arg = 'x86_amd64';
+        }
+        elseif($env:arch -eq 'x86') {
+          $env:vcvar_arg = 'x86';
+        }
+
+
+
+build_script:
+  - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
+  - DIR C:\
+  - DIR C:\MinGW
+  - DIR C:\MinGW\bin
+  - ENV
