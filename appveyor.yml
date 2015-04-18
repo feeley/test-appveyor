@@ -48,22 +48,22 @@ build_script:
         {
           if($env:arch -eq 'x86-32')
           {
-            sh -c "cl -o foo.exe foo.c"
+            sh -c "cl -o foo.exe foo.c";
           }
           elseif($env:arch -eq 'x86-64')
           {
-            sh -c "cl -o foo.exe foo.c"
+            sh -c "cl -o foo.exe foo.c";
           }
         }
         elseif($env:tools -eq 'mingw')
         {
           if($env:arch -eq 'x86-32')
           {
-            sh -c "export PATH=/c/MinGW/bin:$PATH;gcc -o foo.exe foo.c"
+            sh -c "export PATH=/c/MinGW/bin:$PATH;gcc -o foo.exe foo.c";
           }
           elseif($env:arch -eq 'x86-64')
           {
-            sh -c "export PATH=/c/mingw64/bin:$PATH;gcc -o foo.exe foo.c"
+            sh -c "export PATH=/c/mingw64/bin:$PATH;gcc -o foo.exe foo.c";
           }
         }
 
@@ -73,21 +73,21 @@ test_script:
         {
           if($env:arch -eq 'x86-32')
           {
-            sh -c "ls -l;./foo.exe"
+            sh -c "ls -l;./foo.exe";
           }
           elseif($env:arch -eq 'x86-64')
           {
-            sh -c "ls -l;./foo.exe"
+            sh -c "ls -l;./foo.exe";
           }
         }
         elseif($env:tools -eq 'mingw')
         {
           if($env:arch -eq 'x86-32')
           {
-            sh -c "ls -l;./foo.exe"
+            sh -c "ls -l;./foo.exe";
           }
           elseif($env:arch -eq 'x86-64')
           {
-            sh -c "ls -l;./foo.exe"
+            sh -c "ls -l;./foo.exe";
           }
         }
