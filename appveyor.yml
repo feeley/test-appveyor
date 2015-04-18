@@ -29,4 +29,6 @@ build_script:
   - DIR C:\
   - DIR C:\MinGW
   - DIR C:\MinGW\bin
-  - ENV
+  - DIR C:\MinGW\msys
+  - DIR C:\MinGW\msys\bin
+  - C:\MinGW\msys\bin\sh -c "export PATH=/c/MinGW/bin:$PATH;gcc foo.c"
