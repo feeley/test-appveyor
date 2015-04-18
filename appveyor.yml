@@ -28,7 +28,6 @@ install:
         {
           if($env:arch -eq 'x64')
           {
-            # install mingw-w64 in C:\mingw64
             curl -outfile mw64.7z "http://libgd.blob.core.windows.net/mingw/x86_64-4.9.1-release-posix-seh-rt_v3-rev1.7z";
             if((Get-FileHash mw64.7z -Algorithm SHA1).Hash -ne "91A35AE296C1A71802AB0C7228EE57F9AAC5D7C7")
             {
