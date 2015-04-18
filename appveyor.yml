@@ -1,15 +1,15 @@
 environment:
   matrix:
-    - arch: "x86"
+    - arch: "x86-32"
       tools: "mingw"
     
-    - arch: "x64"
+    - arch: "x86-64"
       tools: "mingw"
 
-    - arch: "x86"
+    - arch: "x86-32"
       tools: "msvc12"
     
-    - arch: "x64"
+    - arch: "x86-64"
       tools: "msvc12"
     
 
@@ -17,16 +17,16 @@ environment:
 install:
   - ps: if($env:tools -eq 'msvc12')
         {
-          if($env:arch -eq 'x64') {
+          if($env:arch -eq 'x86-64') {
             $env:vcvar_arg = 'x86_amd64';
           }
-          elseif($env:arch -eq 'x86') {
+          elseif($env:arch -eq 'x86-32') {
             $env:vcvar_arg = 'x86';
           }
         }
         elseif($env:tools -eq 'mingw')
         {
-          if($env:arch -eq 'x64')
+          if($env:arch -eq 'x86-64')
           {
             curl -outfile mw64.7z "http://libgd.blob.core.windows.net/mingw/x86_64-4.9.1-release-posix-seh-rt_v3-rev1.7z";
             if((Get-FileHash mw64.7z -Algorithm SHA1).Hash -ne "91A35AE296C1A71802AB0C7228EE57F9AAC5D7C7")
@@ -44,22 +44,22 @@ build_script:
   - ps: if($env:tools -eq 'msvc12')
         {
           '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
-          if($env:arch -eq 'x86')
+          if($env:arch -eq 'x86-32')
           {
             sh -c "cl -o foo.exe foo.c"
           }
-          elseif($env:arch -eq 'x64')
+          elseif($env:arch -eq 'x86-64')
           {
             sh -c "cl -o foo.exe foo.c"
           }
         }
         elseif($env:tools -eq 'mingw')
         {
-          if($env:arch -eq 'x86')
+          if($env:arch -eq 'x86-32')
           {
             sh -c "export PATH=/c/MinGW/bin:$PATH;gcc -o foo.exe foo.c"
           }
-          elseif($env:arch -eq 'x64')
+          elseif($env:arch -eq 'x86-64')
           {
             sh -c "export PATH=/c/mingw64/bin:$PATH;gcc -o foo.exe foo.c"
           }
@@ -69,22 +69,22 @@ build_script:
 test_script:
   - ps: if($env:tools -eq 'msvc12')
         {
-          if($env:arch -eq 'x86')
+          if($env:arch -eq 'x86-32')
           {
             sh -c "ls -l;./foo.exe"
           }
-          elseif($env:arch -eq 'x64')
+          elseif($env:arch -eq 'x86-64')
           {
             sh -c "ls -l;./foo.exe"
           }
         }
         elseif($env:tools -eq 'mingw')
         {
-          if($env:arch -eq 'x86')
+          if($env:arch -eq 'x86-32')
           {
             sh -c "ls -l;./foo.exe"
           }
-          elseif($env:arch -eq 'x64')
+          elseif($env:arch -eq 'x86-64')
           {
             sh -c "ls -l;./foo.exe"
           }
