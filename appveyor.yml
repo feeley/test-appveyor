@@ -46,7 +46,7 @@ build_script:
   - DIR C:\MinGW
   - DIR C:\MinGW\msys
   - DIR C:\MinGW\msys\1.0
-  - DIR C:\MinGW\msys\1.0\home
+  - DIR C:\MinGW\msys\1.0\bin
   - if [%tools%]==[msvc12] if [%arch%]==[x86-32] sh -c "cl -o foo.exe foo.c"
   - if [%tools%]==[msvc12] if [%arch%]==[x86-64] sh -c "cl -o foo.exe foo.c"
   - if [%tools%]==[mingw] if [%arch%]==[x86-32] sh -c "export PATH=/c/MinGW/bin:$PATH;gcc -o foo.exe foo.c"
