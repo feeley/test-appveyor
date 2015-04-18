@@ -43,51 +43,14 @@ install:
 build_script:
 
   - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
+  - if [%tools%]==[msvc12] if [%arch%]==[x86-32] sh -c "cl -o foo.exe foo.c"
+  - if [%tools%]==[msvc12] if [%arch%]==[x86-64] sh -c "cl -o foo.exe foo.c"
+  - if [%tools%]==[mingw] if [%arch%]==[x86-32] sh -c "export PATH=/c/MinGW/bin:$PATH;gcc -o foo.exe foo.c"
+  - if [%tools%]==[mingw] if [%arch%]==[x86-64] sh -c "export PATH=/c/mingw64/bin:$PATH;gcc -o foo.exe foo.c"
 
-  - ps: if($env:tools -eq 'msvc12')
-        {
-          if($env:arch -eq 'x86-32')
-          {
-            sh -c "cl -o foo.exe foo.c";
-          }
-          elseif($env:arch -eq 'x86-64')
-          {
-            sh -c "cl -o foo.exe foo.c";
-          }
-        }
-        elseif($env:tools -eq 'mingw')
-        {
-          if($env:arch -eq 'x86-32')
-          {
-            sh -c "export PATH=/c/MinGW/bin:$PATH;gcc -o foo.exe foo.c";
-          }
-          elseif($env:arch -eq 'x86-64')
-          {
-            sh -c "export PATH=/c/mingw64/bin:$PATH;gcc -o foo.exe foo.c";
-          }
-        }
 
 
 test_script:
-  - ps: if($env:tools -eq 'msvc12')
-        {
-          if($env:arch -eq 'x86-32')
-          {
-            sh -c "ls -l;./foo.exe";
-          }
-          elseif($env:arch -eq 'x86-64')
-          {
-            sh -c "ls -l;./foo.exe";
-          }
-        }
-        elseif($env:tools -eq 'mingw')
-        {
-          if($env:arch -eq 'x86-32')
-          {
-            sh -c "ls -l;./foo.exe";
-          }
-          elseif($env:arch -eq 'x86-64')
-          {
-            sh -c "ls -l;./foo.exe";
-          }
-        }
+
+  - if [%tools%]==[msvc12] sh -c "ls -l;./foo.exe"
+  - if [%tools%]==[mingw] sh -c "ls -l;./foo.exe"
