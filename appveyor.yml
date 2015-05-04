@@ -47,14 +47,15 @@ build_script:
   - DIR C:\MinGW\msys
   - DIR C:\MinGW\msys\1.0
   - DIR C:\MinGW\msys\1.0\bin
+  - TYPE C:\MinGW\msys\1.0\msys.bat
   - if [%tools%]==[msvc12] if [%arch%]==[x86-32] sh -c "cl -o foo.exe foo.c"
   - if [%tools%]==[msvc12] if [%arch%]==[x86-64] sh -c "cl -o foo.exe foo.c"
-  - if [%tools%]==[mingw] if [%arch%]==[x86-32] sh -c "export PATH=/c/MinGW/bin:$PATH;gcc -o foo.exe foo.c"
-  - if [%tools%]==[mingw] if [%arch%]==[x86-64] sh -c "export PATH=/c/mingw64/bin:$PATH;gcc -o foo.exe foo.c"
+  - if [%tools%]==[mingw] if [%arch%]==[x86-32] sh -c "export PATH=/c/MinGW/msys/1.0/bin:/c/MinGW/bin:$PATH;gcc -o foo.exe foo.c"
+  - if [%tools%]==[mingw] if [%arch%]==[x86-64] sh -c "export PATH=/c/MinGW/msys/1.0/bin:/c/mingw64/bin:$PATH;gcc -o foo.exe foo.c"
 
 
 
 test_script:
 
-  - if [%tools%]==[msvc12] sh -c "env;ls -l;./foo.exe"
-  - if [%tools%]==[mingw] sh -c "env;ls -l;./foo.exe"
+  - if [%tools%]==[msvc12] sh -c "export PATH=/c/MinGW/msys/1.0/bin:$PATH;sed -v;ls -l;./foo.exe"
+  - if [%tools%]==[mingw] sh -c "export PATH=/c/MinGW/msys/1.0/bin:$PATH;sed -v;ls -l;./foo.exe"
