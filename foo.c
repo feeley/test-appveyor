@@ -1,6 +1,6 @@
 #include <stdio.h>
 
 int main() {
-  printf("hello!\n");
+  printf("sizeof(void*)=%d\n",sizeof(void*));
   return 0;
 }

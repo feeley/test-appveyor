@@ -3,14 +3,14 @@ environment:
     - arch: "x86-32"
       tools: "mingw"
     
-#    - arch: "x86-64"
-#      tools: "mingw"
+    - arch: "x86-64"
+      tools: "mingw"
 
-#    - arch: "x86-32"
-#      tools: "msvc12"
+    - arch: "x86-32"
+      tools: "msvc12"
     
-#    - arch: "x86-64"
-#      tools: "msvc12"
+    - arch: "x86-64"
+      tools: "msvc12"
     
 
 
@@ -56,5 +56,5 @@ build_script:
 
 test_script:
 
-  - if [%tools%]==[msvc12] sh -c "ls -l;./foo.exe"
-  - if [%tools%]==[mingw] sh -c "ls -l;./foo.exe"
+  - if [%tools%]==[msvc12] sh -c "env;ls -l;./foo.exe"
+  - if [%tools%]==[mingw] sh -c "env;ls -l;./foo.exe"
