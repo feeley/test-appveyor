@@ -49,12 +49,12 @@ build_script:
   - IF [%tools%]==[msvc12] IF [%arch%]==[x86-32] '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" x86'
   - IF [%tools%]==[msvc12] IF [%arch%]==[x86-64] '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" x86_amd64'
 
-  - IF [%tools%]==[mingw] IF [%arch%]==[x86-32] sh --login -c "export PATH=/c/MinGW/bin:$PATH;ls -l;pwd;make CC=gcc"
-  - IF [%tools%]==[mingw] IF [%arch%]==[x86-64] sh --login -c "export PATH=/c/mingw64/bin:$PATH;ls -l;pwd;make CC=gcc"
-  - IF [%tools%]==[msvc12] sh --login -c "ls -l;pwd;make CC=cl"
+  - IF [%tools%]==[mingw] IF [%arch%]==[x86-32] sh -c "export PATH=/c/MinGW/bin:$PATH;ls -l;pwd;make CC=gcc"
+  - IF [%tools%]==[mingw] IF [%arch%]==[x86-64] sh -c "export PATH=/c/mingw64/bin:$PATH;ls -l;pwd;make CC=gcc"
+  - IF [%tools%]==[msvc12] sh -c "ls -l;pwd;make CC=cl"
 
 
 
 test_script:
 
-  - sh --login -c "ls -l;./foo.exe"
+  - sh -c "ls -l;./foo.exe"
