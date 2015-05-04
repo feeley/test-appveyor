@@ -7,16 +7,25 @@ environment:
       tools: "mingw"
 
     - arch: "x86-32"
-      tools: "msvc12"
+      tools: "msvc"
     
     - arch: "x86-64"
-      tools: "msvc12"
+      tools: "msvc"
     
 
 
 install:
 
-  - ps: if($env:tools -eq 'mingw')
+  - ps: if($env:tools -eq 'msvc')
+        {
+          if($env:arch -eq 'x86-64') {
+            $env:vcvar_arg = 'x86_amd64';
+          }
+          elseif($env:arch -eq 'x86-32') {
+            $env:vcvar_arg = 'x86';
+          }
+        }
+        elseif($env:tools -eq 'mingw')
         {
           if($env:arch -eq 'x86-64')
           {
@@ -34,19 +43,18 @@ install:
 
 build_script:
 
+  - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
   - SET PATH=C:\MinGW\msys\1.0\bin;%PATH%
 
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-32] SET PATH=C:\MinGW\bin;%PATH%
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-64] SET PATH=C:\mingw64\bin;%PATH%
-  - IF [%tools%]==[msvc12] IF [%arch%]==[x86-32] "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" x86
-  - IF [%tools%]==[msvc12] IF [%arch%]==[x86-64] "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" x86_amd64
 
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-32] sh -c "ls -l;pwd;make CC=gcc"
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-64] sh -c "ls -l;pwd;make CC=gcc"
-  - IF [%tools%]==[msvc12] sh -c "ls -l;pwd;make CC=cl"
+  - IF [%tools%]==[msvc] sh -c "ls -l;pwd;make CC=cl"
 
 
 
 test_script:
 
-  - sh -c "ls -l;./foo.exe"
+  - sh -c "ls -l;pwd;./foo.exe"
