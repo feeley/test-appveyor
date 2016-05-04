@@ -1,16 +1,7 @@
 environment:
   matrix:
     - arch: "x86-32"
-      tools: "mingw"
-
-    - arch: "x86-64"
-      tools: "mingw"
-
-    - arch: "x86-32"
-      tools: "msvc"
-
-    - arch: "x86-64"
-      tools: "msvc"
+      tools: "cygwin"
 
     - arch: "x86-64"
       tools: "cygwin"
@@ -41,11 +32,6 @@ install:
             7z x -oC:\ mw64.7z | out-null;
           }
         }
-        elseif($env:tools -eq 'cygwin')
-        {
-          cd \ ; dir
-          cd \cygwin ; dir
-        }
 
 
 build_script:
@@ -55,6 +41,9 @@ build_script:
 
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-32] SET PATH=C:\MinGW\bin;%PATH%
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-64] SET PATH=C:\mingw64\bin;%PATH%
+
+  - IF [%tools%]==[cygwin] IF [%arch%]==[x86-32] SET PATH=C:\cygwin\bin;%PATH%
+  - IF [%tools%]==[cygwin] IF [%arch%]==[x86-64] SET PATH=C:\cygwin64\bin;%PATH%
 
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-32] sh -c "ls -l;pwd;make CC=gcc"
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-64] sh -c "ls -l;pwd;make CC=gcc"
