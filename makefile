@@ -1,4 +1,5 @@
 all:
 	echo "abc" | sed -e "s/b/XXX/g"
-	echo $(CC)
+	which $(CC)
+	$(CC) -v
 	$(CC) -o foo.exe foo.c
