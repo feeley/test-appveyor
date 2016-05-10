@@ -56,5 +56,5 @@ build_script:
 
 test_script:
 
-  - sh -c "cd tests;../gsi/gsi -:s,=.. -f r4rstest.scm -e '(begin (test-cont) (test-sc4) (test-delay) (exit))'"
+  - sh -c "cd tests;../gsi/gsi -:s,=.. -f r4rstest.scm -e '(begin (test-cont) (test-sc4) (test-delay) (exit))';make test3"
   
