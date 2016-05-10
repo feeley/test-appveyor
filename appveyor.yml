@@ -1,10 +1,19 @@
 environment:
   matrix:
     - arch: "x86-64"
+      tools: "mingw"
+
+    - arch: "x86-64"
+      tools: "msvc"
+
+    - arch: "x86-64"
       tools: "cygwin"
 
     - arch: "x86-32"
-      tools: "cygwin"
+      tools: "mingw"
+
+    - arch: "x86-32"
+      tools: "msvc"
 
 
 
@@ -12,6 +21,7 @@ install:
 
   - ps: if($env:tools -eq 'msvc')
         {
+          $env:c_comp = 'cl';
           if($env:arch -eq 'x86-64') {
             $env:vcvar_arg = 'x86_amd64';
           }
@@ -23,6 +33,7 @@ install:
         {
           if($env:arch -eq 'x86-64')
           {
+            $env:c_comp = 'gcc';
             curl -outfile mw64.7z "http://libgd.blob.core.windows.net/mingw/x86_64-4.9.1-release-posix-seh-rt_v3-rev1.7z";
             if((Get-FileHash mw64.7z -Algorithm SHA1).Hash -ne "91A35AE296C1A71802AB0C7228EE57F9AAC5D7C7")
             {
@@ -32,26 +43,30 @@ install:
             7z x -oC:\ mw64.7z | out-null;
           }
         }
+        elseif($env:tools -eq 'cygwin')
+        {
+          $env:c_comp = 'gcc';
+        }
+
 
 
 build_script:
 
   - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
   - SET PATH=C:\MinGW\msys\1.0\bin;%PATH%
+  - IF [%tools%]==[msvc] sh -c "%c_comp%;./configure --enable-c-opt=-Od CC=%c_comp%;make latest-release;./configure CC=%c_comp%;make"
 
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-32] SET PATH=C:\MinGW\bin;%PATH%
   - IF [%tools%]==[mingw] IF [%arch%]==[x86-64] SET PATH=C:\mingw64\bin;%PATH%
+  - IF [%tools%]==[mingw] sh -c "%c_comp% -v;./configure CC=%c_comp%;make latest-release;./configure CC=%c_comp%;make"
 
   - IF [%tools%]==[cygwin] IF [%arch%]==[x86-32] SET PATH=C:\cygwin\bin;%PATH%
   - IF [%tools%]==[cygwin] IF [%arch%]==[x86-64] SET PATH=C:\cygwin64\bin;%PATH%
-
-  - IF [%tools%]==[mingw] IF [%arch%]==[x86-32] sh -c "ls -l;pwd;make CC=gcc"
-  - IF [%tools%]==[mingw] IF [%arch%]==[x86-64] sh -c "ls -l;pwd;make CC=gcc"
-  - IF [%tools%]==[msvc] sh -c "ls -l;pwd;make CC=cl"
-  - IF [%tools%]==[cygwin] sh -c "ls -l;pwd;make CC=gcc"
+  - IF [%tools%]==[cygwin] sh -c "%c_comp% -v;./configure CC=%c_comp%;make latest-release;./configure CC=%c_comp%;make"
 
 
 
 test_script:
 
-  - sh -c "ls -l;pwd;./foo.exe"
+  - sh -c "cd tests;../gsi/gsi -:s,=.. -f r4rstest.scm -e '(begin (test-cont) (test-sc4) (test-delay) (exit))'"
+  
