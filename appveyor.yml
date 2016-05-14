@@ -59,4 +59,4 @@ build_script:
 
 test_script:
 
-  - sh -c "cygcheck -srv"
+  - sh -c "uname -srv"
