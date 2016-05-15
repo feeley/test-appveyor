@@ -55,6 +55,9 @@ build_script:
   - IF [%tools%]==[cygwin] IF [%arch%]==[x86-64] SET PATH=C:\cygwin64\bin;%PATH%
   - IF [%tools%]==[cygwin] sh -c "%c_comp% -v;./configure CC=%c_comp%;make latest-release;./configure CC=%c_comp%;make"
 
+# work around bug in 32 bit cygwin...
+  - IF [%tools%]==[cygwin] IF [%arch%]==[x86-32] sh -c "echo '(##disable-interrupts!)' | cat - tests/r4rstest.scm > r4test.scm;mv r4test.scm tests/r4rstest.scm"
+
 
 
 test_script:
